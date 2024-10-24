@@ -2,12 +2,12 @@
 module.exports = {
   root: true,
   extends: [
-    "@repo/eslint-config/react-internal.js",
-    "@repo/eslint-config/prettier.js",
+    '@repo/eslint-config/react-internal.js',
+    '@repo/eslint-config/prettier.js',
   ],
-  parser: "@typescript-eslint/parser",
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: "./tsconfig.lint.json",
+    project: './tsconfig.lint.json',
     tsconfigRootDir: __dirname,
   },
-};
+}
