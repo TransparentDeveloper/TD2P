@@ -8,6 +8,8 @@ module.exports = {
     "eslint:recommended",
     "prettier",
     require.resolve("@vercel/style-guide/eslint/next"),
+    "airbnb",
+    "airbnb/hooks",
     "turbo",
   ],
   globals: {

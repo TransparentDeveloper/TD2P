@@ -10,7 +10,13 @@ const project = resolve(process.cwd(), "tsconfig.json");
 
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-  extends: ["eslint:recommended", "prettier", "turbo"],
+  extends: [
+    "eslint:recommended",
+    "prettier",
+    "airbnb",
+    "airbnb/hooks",
+    "turbo",
+  ],
   plugins: ["only-warn"],
   globals: {
     React: true,
