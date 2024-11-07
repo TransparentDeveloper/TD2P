@@ -1,0 +1,155 @@
+@use '../../lib/sass/layout.module.sass' as layout
+  
+// 1. Mixins
+@mixin elevation($level)
+  @if $level == 1
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12)
+  @else if $level == 2
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15)
+  @else if $level == 3
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19)
+
+@mixin ripple-effect
+  position: relative
+  overflow: hidden
+  
+  &::after
+    content: ''
+    position: absolute
+    width: 100%
+    height: 100%
+    top: 0
+    left: 0
+    pointer-events: none
+    background-image: radial-gradient(circle, #fff 10%, transparent 10.01%)
+    background-repeat: no-repeat
+    background-position: 50%
+    transform: scale(10, 10)
+    opacity: 0
+    transition: transform .5s, opacity 1s
+
+  &:active::after
+    transform: scale(0, 0)
+    opacity: .3
+    transition: 0s
+
+// 2. Variables & Maps
+$colors: ("primary": #0070f3, "secondary": #666, "success": #0070f3, "danger": #ff4444)
+$sizes: ("sm": 0.875rem, "md": 1rem, "lg": 1.25rem)
+$button-radius: 8px !default
+
+// 3. Functions
+@function set-contrast($color)
+  @if (lightness($color) > 50)
+    @return #000
+  @else
+    @return #fff
+
+// 4. Base Button Styles
+.button
+  @include layout.flex-center
+  @include ripple-effect
+  position: relative
+  border: none
+  border-radius: $button-radius
+  cursor: pointer
+  transition: all 0.2s ease
+  padding: 0.5em 1em
+  font-family: var(--font-geist-sans)
+  font-size: map-get($sizes, "md")
+  font-weight: 500
+
+  // Variants
+  &.primary
+    background-color: map-get($colors, "primary")
+    color: set-contrast(map-get($colors, "primary"))
+    
+    &:hover:not(:disabled)
+      background-color: darken(map-get($colors, "primary"), 10%)
+      @include elevation(2)
+    
+    &:active:not(:disabled)
+      background-color: darken(map-get($colors, "primary"), 15%)
+      @include elevation(1)
+
+  &.secondary
+    background-color: map-get($colors, "secondary")
+    color: set-contrast(map-get($colors, "secondary"))
+    
+    &:hover:not(:disabled)
+      background-color: darken(map-get($colors, "secondary"), 10%)
+      @include elevation(2)
+    
+    &:active:not(:disabled)
+      background-color: darken(map-get($colors, "secondary"), 15%)
+      @include elevation(1)
+
+  &.outline
+    border: 2px solid map-get($colors, "primary")
+    background-color: transparent
+    color: map-get($colors, "primary")
+    
+    &:hover:not(:disabled)
+      background-color: rgba(map-get($colors, "primary"), 0.1)
+      @include elevation(2)
+    
+    &:active:not(:disabled)
+      background-color: rgba(map-get($colors, "primary"), 0.2)
+      @include elevation(1)
+
+  // Sizes
+  &.small
+    font-size: map-get($sizes, "sm")
+    padding: 0.4em 0.8em
+
+  &.medium
+    font-size: map-get($sizes, "md")
+    padding: 0.5em 1em
+
+  &.large
+    font-size: map-get($sizes, "lg")
+    padding: 0.6em 1.2em
+
+  // States
+  &:disabled
+    opacity: 0.5
+    cursor: not-allowed
+    pointer-events: none
+
+  &.loading
+    position: relative
+    cursor: wait
+    opacity: 0.7
+    
+    &::after
+      content: ""
+      position: absolute
+      width: 1em
+      height: 1em
+      top: 50%
+      left: 50%
+      margin: -0.5em
+      border: 2px solid currentColor
+      border-radius: 50%
+      border-right-color: transparent
+      animation: spin 0.75s linear infinite
+
+  // Icon support
+  .icon
+    margin-right: 0.5em
+    
+    &--right
+      margin-right: 0
+      margin-left: 0.5em
+
+  // Responsive
+  @media (max-width: 768px)
+    font-size: map-get($sizes, "sm")
+    padding: 0.4em 0.8em
+
+// 5. Animations
+@keyframes spin
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
